@@ -1,2 +1,2 @@
-Main-Class: Hello
+Main-Class: com.krgamestudios.lox.Lox
 

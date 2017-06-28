@@ -1,25 +1,15 @@
-#source
-JAVASRC=$(wildcard *.java)
-
-#class files
+#outputi
 OBJDIR=obj
-OBJ+=$(JAVASRC:.java=.class)
-
-#output
 OUTDIR=../out
-OUT=src.jar
+OUT=jlox.jar
 
 #targets
-all: $(OBJDIR) $(OBJDIR)/$(OBJ)
-	jar cfm $(OUTDIR)/$(OUT) manifest.txt -C $(OBJDIR) $(OBJ)
-
-$(OBJ): | $(OBJDIR)
+all: $(OBJDIR)
+	javac -d $(OBJDIR) *.java
+	jar cfm $(OUTDIR)/$(OUT) manifest.txt -C $(OBJDIR) .
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
-
-$(OBJDIR)/%.class: %.java
-	javac -d $(OBJDIR) $<
 
 clean:
 ifeq ($(OS),Windows_NT)
