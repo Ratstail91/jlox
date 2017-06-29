@@ -9,6 +9,9 @@ OUTDIR=out
 all: $(OUTDIR)
 	$(MAKE) -C src
 
+tool: $(OUTDIR)
+	$(MAKE) -C tool
+
 debug: clean all
 
 release: clean all package

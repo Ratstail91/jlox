@@ -1,7 +1,7 @@
 #output
 OBJDIR=obj
 OUTDIR=../out
-OUT=jlox.jar
+OUT=tool.jar
 
 #targets
 all: $(OBJDIR)
