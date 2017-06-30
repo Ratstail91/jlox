@@ -38,6 +38,8 @@ public class Tool {
     writer.println("");
     writer.println("abstract class " + baseName + " {");
 
+    DefineASTVisitor(writer, baseName, types);
+
     //write each AST class
     for (String type : types) {
       String className = type.split(":")[0].trim();
@@ -47,6 +49,20 @@ public class Tool {
 
     writer.println("}");
     writer.close();
+  }
+
+  private static void DefineASTVisitor(PrintWriter writer, String baseName, List<String> types) {
+    //create a visitor for each type
+    writer.println("  interface Visitor<R> {");
+    for (String type : types) {
+      String typeName = type.split(":")[0].trim();
+      writer.println("    R visit(" + typeName + " " + baseName.toLowerCase() + ");");
+    }
+    writer.println("  }");
+
+    //create the abstract accept method for the visitor pattern
+    writer.println("");
+    writer.println("  abstract <R> R accept(Visitor<R> visitor);");
   }
 
   private static void DefineASTType(PrintWriter writer, String baseName, String className, String fieldList) {
@@ -64,11 +80,17 @@ public class Tool {
     writer.println("");
 
     //constructor
-    writer.println("    " + baseName + "(" + fieldList + ") {");
+    writer.println("    " + className + "(" + fieldList + ") {");
     for(String field : fields) {
       String name = field.split(" ")[1];
       writer.println("      this." + name + " = " + name + ";");
     }
+    writer.println("    }");
+
+    //define the accept method
+    writer.println("");
+    writer.println("    <R> R accept(Visitor<R> visitor) {");
+    writer.println("      return visitor.visit(this);");
     writer.println("    }");
 
     //close
