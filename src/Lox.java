@@ -16,6 +16,7 @@ import java.util.List;
 public class Lox {
   //members
   static boolean errorState = false;
+  private static final Interpreter interpreter = new Interpreter();
 
   //universal entry point
   public static void main(String[] args) throws IOException {
@@ -59,7 +60,7 @@ public class Lox {
 
     if (errorState) return;
 
-    System.out.println(new AstPrinterPostfix().Print(expression));
+    interpreter.Interpret(expression);
   }
 
   //error functions
@@ -76,8 +77,12 @@ public class Lox {
     }
   }
 
+  static void RuntimeError(RuntimeError error) {
+    Report(error.token.line, "", error.getMessage());
+  }
+
   private static void Report(int line, String where, String msg) {
-    System.err.println("[line " + line + "] Error " + where + ": " + msg);
+    System.err.println("[line " + line + "] Error" + where + ": " + msg);
     errorState = true;
   }
 }
