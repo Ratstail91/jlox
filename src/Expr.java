@@ -4,13 +4,13 @@ import java.util.List;
 
 abstract class Expr {
   interface Visitor<R> {
-    R visit(Binary expr);
-    R visit(Grouping expr);
-    R visit(Literal expr);
-    R visit(Unary expr);
+    R Visit(Binary expr);
+    R Visit(Grouping expr);
+    R Visit(Literal expr);
+    R Visit(Unary expr);
   }
 
-  abstract <R> R accept(Visitor<R> visitor);
+  abstract <R> R Accept(Visitor<R> visitor);
 
   static class Binary extends Expr {
     final Expr lhs;
@@ -23,8 +23,8 @@ abstract class Expr {
       this.rhs = rhs;
     }
 
-    <R> R accept(Visitor<R> visitor) {
-      return visitor.visit(this);
+    <R> R Accept(Visitor<R> visitor) {
+      return visitor.Visit(this);
     }
   }
 
@@ -35,8 +35,8 @@ abstract class Expr {
       this.expression = expression;
     }
 
-    <R> R accept(Visitor<R> visitor) {
-      return visitor.visit(this);
+    <R> R Accept(Visitor<R> visitor) {
+      return visitor.Visit(this);
     }
   }
 
@@ -47,8 +47,8 @@ abstract class Expr {
       this.value = value;
     }
 
-    <R> R accept(Visitor<R> visitor) {
-      return visitor.visit(this);
+    <R> R Accept(Visitor<R> visitor) {
+      return visitor.Visit(this);
     }
   }
 
@@ -61,8 +61,8 @@ abstract class Expr {
       this.rhs = rhs;
     }
 
-    <R> R accept(Visitor<R> visitor) {
-      return visitor.visit(this);
+    <R> R Accept(Visitor<R> visitor) {
+      return visitor.Visit(this);
     }
   }
 }

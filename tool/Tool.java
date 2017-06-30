@@ -56,13 +56,13 @@ public class Tool {
     writer.println("  interface Visitor<R> {");
     for (String type : types) {
       String typeName = type.split(":")[0].trim();
-      writer.println("    R visit(" + typeName + " " + baseName.toLowerCase() + ");");
+      writer.println("    R Visit(" + typeName + " " + baseName.toLowerCase() + ");");
     }
     writer.println("  }");
 
     //create the abstract accept method for the visitor pattern
     writer.println("");
-    writer.println("  abstract <R> R accept(Visitor<R> visitor);");
+    writer.println("  abstract <R> R Accept(Visitor<R> visitor);");
   }
 
   private static void DefineASTType(PrintWriter writer, String baseName, String className, String fieldList) {
@@ -89,8 +89,8 @@ public class Tool {
 
     //define the accept method
     writer.println("");
-    writer.println("    <R> R accept(Visitor<R> visitor) {");
-    writer.println("      return visitor.visit(this);");
+    writer.println("    <R> R Accept(Visitor<R> visitor) {");
+    writer.println("      return visitor.Visit(this);");
     writer.println("    }");
 
     //close

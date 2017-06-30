@@ -4,29 +4,29 @@ import java.lang.StringBuilder;
 
 //create a lisp-like representation of AST nodes
 class AstPrinterPrefix implements Expr.Visitor<String> {
-  String print(Expr expr) {
-    return expr.accept(this);
+  String Print(Expr expr) {
+    return expr.Accept(this);
   }
 
   //define the visit methods
   @Override
-  public String visit(Expr.Binary expr) {
+  public String Visit(Expr.Binary expr) {
     return Parenthesize(expr.operator.lexeme, expr.lhs, expr.rhs);
   }
 
   @Override
-  public String visit(Expr.Grouping expr) {
+  public String Visit(Expr.Grouping expr) {
     return Parenthesize("group", expr.expression);
   }
 
   @Override
-  public String visit(Expr.Literal expr) {
+  public String Visit(Expr.Literal expr) {
     if (expr.value == null) return "nil";
     return expr.value.toString();
   }
 
   @Override
-  public String visit(Expr.Unary expr) {
+  public String Visit(Expr.Unary expr) {
     return Parenthesize(expr.operator.lexeme, expr.rhs);
   }
 
@@ -36,7 +36,7 @@ class AstPrinterPrefix implements Expr.Visitor<String> {
     builder.append("(").append(name);
     for (Expr expr : exprs) {
       builder.append(" ");
-      builder.append(expr.accept(this));
+      builder.append(expr.Accept(this));
     }
     builder.append(")");
 

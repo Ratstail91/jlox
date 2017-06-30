@@ -53,21 +53,31 @@ public class Lox {
   //core function
   private static void Run(String source) {
     Lexer lexer = new Lexer(source);
-    List<Token> tokens = lexer.ScanTokens();
+    Parser parser = new Parser(lexer.ScanTokens());
 
-    //for now, just print the tokens
-    for (Token token : tokens) {
-      System.out.println(token);
-    }
+    Expr expression = parser.Parse();
+
+    if (errorState) return;
+
+    System.out.println(new AstPrinterPostfix().Print(expression));
   }
 
   //error functions
-  static void Error(int line, String message) {
-    Report(line, "", message);
+  static void Error(int line, String msg) {
+    Report(line, "", msg);
   }
 
-  private static void Report(int line, String where, String message) {
-    System.err.println("[line " + line + "] Error " + where + ": " + message);
+  static void Error(Token token, String msg) {
+    if (token.type == TokenType.EOF) {
+      Report(token.line, " at end of file", msg);
+    }
+    else {
+      Report(token.line, "at '" + token.lexeme + "'", msg);
+    }
+  }
+
+  private static void Report(int line, String where, String msg) {
+    System.err.println("[line " + line + "] Error " + where + ": " + msg);
     errorState = true;
   }
 }

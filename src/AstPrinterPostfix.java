@@ -4,29 +4,29 @@ import java.lang.StringBuilder;
 
 //create a reverse-polish notation representation of the AST
 class AstPrinterPostfix implements Expr.Visitor<String> {
-  String print(Expr expr) {
-    return expr.accept(this);
+  String Print(Expr expr) {
+    return expr.Accept(this);
   }
 
   //define the visit methods
   @Override
-  public String visit(Expr.Binary expr) {
+  public String Visit(Expr.Binary expr) {
     return Display(expr.operator.lexeme, expr.lhs, expr.rhs);
   }
 
   @Override
-  public String visit(Expr.Grouping expr) {
-    return expr.expression.accept(this);
+  public String Visit(Expr.Grouping expr) {
+    return expr.expression.Accept(this);
   }
 
   @Override
-  public String visit(Expr.Literal expr) {
+  public String Visit(Expr.Literal expr) {
     if (expr.value == null) return "nil";
     return expr.value.toString();
   }
 
   @Override
-  public String visit(Expr.Unary expr) {
+  public String Visit(Expr.Unary expr) {
     if (expr.operator.type == TokenType.MINUS) {
       return Display("neg", expr.rhs);
     }
@@ -37,7 +37,7 @@ class AstPrinterPostfix implements Expr.Visitor<String> {
     StringBuilder builder = new StringBuilder();
 
     for (Expr expr : exprs) {
-      builder.append(expr.accept(this));
+      builder.append(expr.Accept(this));
       builder.append(" ");
     }
     builder.append(name);
