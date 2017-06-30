@@ -52,8 +52,8 @@ public class Lox {
 
   //core function
   private static void Run(String source) {
-    LexicalScanner scanner = new LexicalScanner(source);
-    List<Token> tokens = scanner.ScanTokens();
+    Lexer lexer = new Lexer(source);
+    List<Token> tokens = lexer.ScanTokens();
 
     //for now, just print the tokens
     for (Token token : tokens) {

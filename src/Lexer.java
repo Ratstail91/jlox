@@ -7,7 +7,7 @@ import java.util.Map;
 
 import static com.krgamestudios.lox.TokenType.*;
 
-class LexicalScanner {
+class Lexer {
   //members
   private final String source;
   private final List<Token> tokens = new ArrayList<>();
@@ -40,7 +40,7 @@ class LexicalScanner {
   }
 
   //methods
-  LexicalScanner(String source) {
+  Lexer(String source) {
     this.source = source;
   }
 
