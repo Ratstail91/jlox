@@ -2,8 +2,8 @@ package com.krgamestudios.lox;
 
 import java.lang.StringBuilder;
 
-//create a lisp-like representation of AST nodes
-class AstPrinter implements Expr.Visitor<String> {
+//create a reverse-polish notation representation of the AST
+class AstPrinterPostfix implements Expr.Visitor<String> {
   String print(Expr expr) {
     return expr.accept(this);
   }
@@ -11,12 +11,12 @@ class AstPrinter implements Expr.Visitor<String> {
   //define the visit methods
   @Override
   public String visit(Expr.Binary expr) {
-    return Parenthesize(expr.operator.lexeme, expr.lhs, expr.rhs);
+    return Display(expr.operator.lexeme, expr.lhs, expr.rhs);
   }
 
   @Override
   public String visit(Expr.Grouping expr) {
-    return Parenthesize("group", expr.expression);
+    return expr.expression.accept(this);
   }
 
   @Override
@@ -27,19 +27,22 @@ class AstPrinter implements Expr.Visitor<String> {
 
   @Override
   public String visit(Expr.Unary expr) {
-    return Parenthesize(expr.operator.lexeme, expr.rhs);
+    if (expr.operator.type == TokenType.MINUS) {
+      return Display("neg", expr.rhs);
+    }
+    return Display(expr.operator.lexeme, expr.rhs);
   }
 
-  private String Parenthesize(String name, Expr... exprs) {
+  private String Display(String name, Expr... exprs) {
     StringBuilder builder = new StringBuilder();
 
-    builder.append("(").append(name);
     for (Expr expr : exprs) {
-      builder.append(" ");
       builder.append(expr.accept(this));
+      builder.append(" ");
     }
-    builder.append(")");
+    builder.append(name);
 
     return builder.toString();
+    
   }
 }
