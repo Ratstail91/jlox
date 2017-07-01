@@ -56,11 +56,11 @@ public class Lox {
     Lexer lexer = new Lexer(source);
     Parser parser = new Parser(lexer.ScanTokens());
 
-    Expr expression = parser.Parse();
+    List<Stmt> statements = parser.Parse();
 
     if (errorState) return;
 
-    interpreter.Interpret(expression);
+    interpreter.Interpret(statements);
   }
 
   //error functions

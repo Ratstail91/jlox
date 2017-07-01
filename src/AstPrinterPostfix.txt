@@ -45,4 +45,9 @@ class AstPrinterPostfix implements Expr.Visitor<String> {
     return builder.toString();
     
   }
+
+  @Override
+  public String Visit(Expr.Variable expr) {
+    return expr.name.lexeme;
+  }
 }

@@ -13,12 +13,21 @@ public class Tool {
     }
 
     //choose the correct mode
-    if (args[0].equals("ast")) {
+    if (args[0].equals("Expr")) {
       DefineAst(args[1], "Expr", Arrays.asList(
+        "Assign   : Token name,Expr value",
         "Binary   : Expr lhs,Token operator,Expr rhs",
         "Grouping : Expr expression",
         "Literal  : Object value",
-        "Unary    : Token operator,Expr rhs"
+        "Unary    : Token operator,Expr rhs",
+        "Variable : Token name"
+      ));
+    }
+    else if (args[0].equals("Stmt")) {
+      DefineAst(args[1], "Stmt", Arrays.asList(
+        "Expression : Expr expression",
+        "Print      : Expr expression",
+        "Var        : Token name,Expr initializer"
       ));
     }
     else {

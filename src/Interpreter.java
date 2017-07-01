@@ -1,13 +1,18 @@
 package com.krgamestudios.lox;
 
+import java.util.List;
+
 import static com.krgamestudios.lox.TokenType.*;
 
-class Interpreter implements Expr.Visitor<Object> {
+class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
+  private Environment environment = new Environment();
+
   //wrapper functions
-  void Interpret(Expr expression) {
+  void Interpret(List<Stmt> statements) {
     try {
-      Object value = Evaluate(expression);
-      System.out.println(Stringify(value));
+      for (Stmt statement : statements) {
+        Execute(statement);
+      }
     }
     catch(RuntimeError error) {
       Lox.RuntimeError(error);
@@ -30,6 +35,13 @@ class Interpreter implements Expr.Visitor<Object> {
   }
 
   //AST types
+  @Override
+  public Object Visit(Expr.Assign expr) {
+    Object value = Evaluate(expr.value);
+    environment.Assign(expr.name, value);
+    return value;
+  }
+
   @Override
   public Object Visit(Expr.Literal expr) {
     return expr.value;
@@ -112,7 +124,39 @@ class Interpreter implements Expr.Visitor<Object> {
     return null;
   }
 
+  @Override
+  public Object Visit(Expr.Variable expr) {
+    return environment.Get(expr.name);
+  }
+
+  @Override
+  public Void Visit(Stmt.Var stmt) {
+    Object value = null;
+    if (stmt.initializer != null) {
+      value = Evaluate(stmt.initializer);
+    }
+    environment.Define(stmt.name.lexeme, value);
+    return null;
+  }
+
+  @Override
+  public Void Visit(Stmt.Expression stmt) {
+    Evaluate(stmt.expression);
+    return null;
+  }
+
+  @Override
+  public Void Visit(Stmt.Print stmt) {
+    Object value = Evaluate(stmt.expression);
+    System.out.println(Stringify(value));
+    return null;
+  }
+
   //helpers
+  private void Execute(Stmt stmt) {
+    stmt.Accept(this);
+  }
+
   private Object Evaluate(Expr expr) {
     return expr.Accept(this);
   }
