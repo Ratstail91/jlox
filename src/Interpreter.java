@@ -34,6 +34,20 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     return object.toString();
   }
 
+  void ExecuteBlock(List<Stmt> statements, Environment environment) {
+    Environment previous = this.environment;
+
+    try {
+      this.environment = environment;
+      for (Stmt statement : statements) {
+        Execute(statement);
+      }
+    }
+    finally {
+      this.environment = previous;
+    }
+  }
+
   //AST types
   @Override
   public Object Visit(Expr.Assign expr) {
@@ -136,6 +150,12 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
       value = Evaluate(stmt.initializer);
     }
     environment.Define(stmt.name.lexeme, value);
+    return null;
+  }
+
+  @Override
+  public Void Visit(Stmt.Block stmt) {
+    ExecuteBlock(stmt.statements, new Environment(environment));
     return null;
   }
 
