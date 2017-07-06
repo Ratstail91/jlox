@@ -139,6 +139,20 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   }
 
   @Override
+  public Object Visit(Expr.Logical expr) {
+    Object lhs = Evaluate(expr.lhs);
+
+    if (expr.operator.type == TokenType.OR) {
+      if (IsTruthy(lhs)) return lhs;
+    }
+    if (!IsTruthy(lhs)) {
+      return lhs;
+    }
+
+    return Evaluate(expr.rhs);
+  }
+
+  @Override
   public Object Visit(Expr.Variable expr) {
     return environment.Get(expr.name);
   }
@@ -154,6 +168,14 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   }
 
   @Override
+  public Void Visit(Stmt.While stmt) {
+    while(IsTruthy(Evaluate(stmt.condition))) {
+      Execute(stmt.body);
+    }
+    return null;
+  }
+
+  @Override
   public Void Visit(Stmt.Block stmt) {
     ExecuteBlock(stmt.statements, new Environment(environment));
     return null;
@@ -162,6 +184,17 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   @Override
   public Void Visit(Stmt.Expression stmt) {
     Evaluate(stmt.expression);
+    return null;
+  }
+
+  @Override
+  public Void Visit(Stmt.If stmt) {
+    if (IsTruthy(Evaluate(stmt.condition))) {
+      Execute(stmt.thenBranch);
+    }
+    else if (stmt.thenBranch != null) {
+      Execute(stmt.thenBranch);
+    }
     return null;
   }
 

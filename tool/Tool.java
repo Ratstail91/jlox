@@ -19,6 +19,7 @@ public class Tool {
         "Binary   : Expr lhs,Token operator,Expr rhs",
         "Grouping : Expr expression",
         "Literal  : Object value",
+        "Logical  : Expr lhs,Token operator,Expr rhs",
         "Unary    : Token operator,Expr rhs",
         "Variable : Token name"
       ));
@@ -27,8 +28,10 @@ public class Tool {
       DefineAst(args[1], "Stmt", Arrays.asList(
         "Block      : List<Stmt> statements",
         "Expression : Expr expression",
+        "If         : Expr condition,Stmt thenBranch,Stmt elseBranch",
         "Print      : Expr expression",
-        "Var        : Token name,Expr initializer"
+        "Var        : Token name,Expr initializer",
+        "While      : Expr condition,Stmt body"
       ));
     }
     else {
