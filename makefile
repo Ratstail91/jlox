@@ -17,7 +17,7 @@ debug: clean all
 release: clean all package
 
 $(OUTDIR):
-	mkdir $(OUTDIR)
+	mkdir -p $(OUTDIR)
 
 clean:
 ifeq ($(OS),Windows_NT)
